@@ -3,9 +3,11 @@ package com.example.jifenapp.ui.record
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jifenapp.data.local.entity.PointRecordEntity
+import com.example.jifenapp.data.local.entity.PointRuleEntity
 import com.example.jifenapp.data.local.entity.RecordType
 import com.example.jifenapp.data.repository.ChildRepository
 import com.example.jifenapp.data.repository.PointRecordRepository
+import com.example.jifenapp.data.repository.PointRuleRepository
 import com.example.jifenapp.di.AppContainer
 import com.example.jifenapp.util.nowMillis
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,12 +19,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * 添加流水 ViewModel（自由输入版）。
+ * 添加流水 ViewModel（迭代 2：含规则选择）。
  */
 class AddRecordViewModel(
     private val childId: Long,
     private val childRepository: ChildRepository,
-    private val recordRepository: PointRecordRepository
+    private val recordRepository: PointRecordRepository,
+    private val ruleRepository: PointRuleRepository
 ) : ViewModel() {
 
     private val _form = MutableStateFlow(AddRecordUiState())
@@ -30,9 +33,10 @@ class AddRecordViewModel(
     val uiState: StateFlow<AddRecordUiState> = combine(
         _form,
         childRepository.observeById(childId),
-        recordRepository.totalPoints(childId)
-    ) { form, child, total ->
-        form.copy(child = child, childTotalPoints = total)
+        recordRepository.totalPoints(childId),
+        ruleRepository.observeEnabled()
+    ) { form, child, total, rules ->
+        form.copy(child = child, childTotalPoints = total, rules = rules)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -41,22 +45,38 @@ class AddRecordViewModel(
 
     fun setType(type: RecordType) = _form.update { it.copy(type = type, error = null) }
 
-    fun setTitle(title: String) = _form.update { it.copy(title = title.take(40), error = null) }
+    fun setTitle(title: String) = _form.update {
+        it.copy(title = title.take(40), selectedRuleId = null, error = null)
+    }
 
     fun setPoints(input: String) = _form.update {
-        // 只允许整数，避免小数
         val cleaned = input.filter { c -> c.isDigit() }.take(5)
-        it.copy(pointsInput = cleaned, error = null)
+        it.copy(pointsInput = cleaned, selectedRuleId = null, error = null)
     }
 
     fun setNote(note: String) = _form.update { it.copy(note = note.take(100)) }
 
-    /** 快捷调整分数（按钮 +1 / -1 / +5 / -5） */
     fun adjustPoints(delta: Int) {
         val current = _form.value.points ?: 0
         val newValue = (current + delta).coerceAtLeast(0).coerceAtMost(99999)
-        _form.update { it.copy(pointsInput = newValue.toString()) }
+        _form.update { it.copy(pointsInput = newValue.toString(), selectedRuleId = null) }
     }
+
+    /**
+     * 选中规则：自动填入 title / points / type，清空 note。
+     */
+    fun selectRule(rule: PointRuleEntity) = _form.update {
+        val type = if (rule.points < 0) RecordType.SUBTRACT else RecordType.ADD
+        it.copy(
+            selectedRuleId = rule.id,
+            title = rule.name,
+            pointsInput = kotlin.math.abs(rule.points).toString(),
+            type = type,
+            note = ""
+        )
+    }
+
+    fun clearRuleSelection() = _form.update { it.copy(selectedRuleId = null) }
 
     fun save() {
         val current = _form.value
@@ -73,6 +93,7 @@ class AddRecordViewModel(
                         points = p,
                         title = current.title.trim(),
                         note = current.note.trim().takeIf { it.isNotEmpty() },
+                        ruleId = current.selectedRuleId,
                         createdAt = nowMillis()
                     )
                 )
@@ -88,7 +109,8 @@ class AddRecordViewModel(
             AddRecordViewModel(
                 childId = childId,
                 childRepository = container.childRepository,
-                recordRepository = container.pointRecordRepository
+                recordRepository = container.pointRecordRepository,
+                ruleRepository = container.pointRuleRepository
             )
         }
     }

@@ -2,9 +2,10 @@ package com.example.jifenapp.ui.record
 
 import com.example.jifenapp.data.local.entity.ChildEntity
 import com.example.jifenapp.data.local.entity.RecordType
+import com.example.jifenapp.data.model.RuleWithCategory
 
 /**
- * 添加流水页面状态。MVP 阶段仅支持自由输入；迭代 2 接入规则模板后扩展。
+ * 添加流水页面状态。迭代 2 接入规则模板。
  */
 data class AddRecordUiState(
     val child: ChildEntity? = null,
@@ -13,6 +14,10 @@ data class AddRecordUiState(
     val pointsInput: String = "",
     val title: String = "",
     val note: String = "",
+    /** 当前选中的规则 id；null = 自由输入 */
+    val selectedRuleId: Long? = null,
+    /** 启用的规则列表（按分类分组展示） */
+    val rules: List<RuleWithCategory> = emptyList(),
     val saving: Boolean = false,
     val saved: Boolean = false,
     val error: String? = null

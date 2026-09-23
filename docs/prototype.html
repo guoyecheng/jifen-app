@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>宝贝积分 · 高保真原型</title>
+<title>宝贝积分 · 高保真原型 (v2)</title>
 <style>
   /* ================== 基础 ================== */
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -44,7 +44,7 @@
 
   .phone {
     width: 390px;
-    height: 800px;
+    height: 820px;
     background: #fff;
     border-radius: 40px;
     box-shadow:
@@ -126,9 +126,9 @@
     cursor: pointer;
     color: var(--top-title, #1a1b1f);
     transition: background 200ms;
+    font-size: 18px;
   }
   .top-bar .icon-btn:hover { background: rgba(0,0,0,0.05); }
-  .top-bar .icon-btn svg { width: 24px; height: 24px; }
   .top-bar .actions { display: flex; gap: 4px; }
 
   /* ================== HomeScreen ================== */
@@ -164,7 +164,6 @@
     flex-shrink: 0;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
-  .avatar.lg { width: 72px; height: 72px; font-size: 36px; }
   .avatar.md { width: 48px; height: 48px; font-size: 24px; }
   .avatar.sm { width: 36px; height: 36px; font-size: 18px; border-radius: 18px; }
 
@@ -216,8 +215,8 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
+    font-size: 48px;
   }
-  .empty-state .icon-circle svg { width: 48px; height: 48px; color: #5b6ee1; }
   .empty-state h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
   .empty-state p { font-size: 14px; color: #888; margin-bottom: 24px; max-width: 260px; }
 
@@ -237,9 +236,9 @@
     box-shadow: 0 4px 12px rgba(91, 110, 225, 0.4);
     cursor: pointer;
     transition: transform 200ms;
+    font-size: 24px;
   }
   .fab:hover { transform: scale(1.05); }
-  .fab svg { width: 24px; height: 24px; }
   .fab.extended {
     width: auto;
     padding: 0 20px;
@@ -401,6 +400,78 @@
     display: block;
   }
 
+  /* 规则选择器 */
+  .rule-picker {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid #e7e8f0;
+  }
+  .rule-picker-empty {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    padding: 8px;
+  }
+  .cat-section { margin-bottom: 12px; }
+  .cat-section:last-child { margin-bottom: 0; }
+  .cat-section .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .cat-section .cat-header .dot {
+    width: 8px; height: 8px; border-radius: 4px;
+  }
+  .cat-section .cat-header .count {
+    color: #aaa;
+    font-weight: 500;
+    margin-left: auto;
+  }
+  .chip-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .chip-row::-webkit-scrollbar { display: none; }
+
+  .rule-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f7f7fb;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: all 200ms;
+  }
+  .rule-chip:hover { background: #eef0f8; }
+  .rule-chip.selected {
+    border-color: var(--chip-color, #5b6ee1);
+    background: rgba(91, 110, 225, 0.08);
+  }
+  .rule-chip .ic {
+    font-size: 18px;
+  }
+  .rule-chip .nm {
+    font-weight: 500;
+    color: #1a1b1f;
+  }
+  .rule-chip .pn {
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .rule-chip .pn.add { color: #2e7d32; }
+  .rule-chip .pn.sub { color: #c62828; }
+
   .type-tabs {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -490,6 +561,144 @@
   .save-btn.add { background: #2e7d32; }
   .save-btn.sub { background: #c62828; }
 
+  /* ================== RulesScreen (迭代 2) ================== */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+
+  .filter-chip {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 16px;
+    border: 1px solid #e7e8f0;
+    background: white;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 200ms;
+    white-space: nowrap;
+  }
+  .filter-chip.selected {
+    background: #5b6ee1;
+    color: white;
+    border-color: #5b6ee1;
+  }
+
+  .rules-list {
+    padding: 0 12px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .rule-group-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 4px 6px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .rule-group-header .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+  }
+  .rule-group-header .count {
+    font-size: 11px;
+    color: #aaa;
+    font-weight: 500;
+  }
+
+  .rule-card {
+    background: white;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .rule-card.disabled { opacity: 0.5; }
+
+  .rule-card .ic-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .rule-card .info {
+    flex: 1;
+    min-width: 0;
+  }
+  .rule-card .nm { font-size: 14px; font-weight: 500; color: #1a1b1f; }
+  .rule-card .meta { font-size: 11px; color: #999; margin-top: 2px; }
+
+  .rule-card .pn {
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .rule-card .pn.add { color: #2e7d32; }
+  .rule-card .pn.sub { color: #c62828; }
+
+  /* Switch */
+  .switch {
+    width: 38px;
+    height: 22px;
+    border-radius: 11px;
+    background: #d0d0d0;
+    position: relative;
+    cursor: pointer;
+    transition: background 200ms;
+    flex-shrink: 0;
+  }
+  .switch.on { background: #5b6ee1; }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    background: white;
+    transition: left 200ms;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .switch.on::after { left: 18px; }
+
+  .icon-btn-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: background 200ms;
+  }
+  .icon-btn-sm:hover { background: rgba(0,0,0,0.05); }
+  .icon-btn-sm.edit { color: #5b6ee1; }
+  .icon-btn-sm.delete { color: #c62828; }
+
   /* ================== Modal / Dialog ================== */
   .scrim {
     position: absolute;
@@ -509,6 +718,8 @@
     padding: 20px;
     width: 100%;
     max-width: 360px;
+    max-height: 90%;
+    overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     animation: scalein 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
@@ -516,7 +727,7 @@
 
   .dialog h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
   .dialog p { font-size: 14px; color: #666; margin-bottom: 16px; }
-  .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
   .dialog-actions button {
     height: 40px;
     padding: 0 16px;
@@ -566,6 +777,61 @@
     font-weight: 700;
   }
 
+  /* 规则编辑器 */
+  .field-group { margin-bottom: 14px; }
+  .field-group .label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .penalty-toggle {
+    display: inline-flex;
+    background: #f0f2f8;
+    border-radius: 20px;
+    padding: 3px;
+    gap: 0;
+  }
+  .penalty-toggle button {
+    padding: 6px 14px;
+    border-radius: 16px;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #666;
+    transition: all 200ms;
+  }
+  .penalty-toggle button.active.add { background: #2e7d32; color: white; }
+  .penalty-toggle button.active.sub { background: #c62828; color: white; }
+
+  /* 分类管理 */
+  .cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cat-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #f7f7fb;
+    border-radius: 10px;
+  }
+  .cat-list-item .ic { font-size: 22px; }
+  .cat-list-item .nm { flex: 1; font-size: 14px; font-weight: 500; }
+  .cat-list-item .color-dot {
+    width: 24px; height: 24px;
+    border-radius: 12px;
+  }
+  .cat-list-item .icon-btn-sm {
+    width: 28px; height: 28px;
+    font-size: 13px;
+  }
+
   /* ================== 控制面板 ================== */
   .controls {
     margin-top: 32px;
@@ -588,23 +854,33 @@
   }
   .controls button:hover { background: #5b6ee1; color: white; border-color: #5b6ee1; }
   .controls button.active { background: #5b6ee1; color: white; border-color: #5b6ee1; }
+  .controls .group-title {
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    color: #aaa;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 8px 0 0;
+  }
   .legend {
     margin-top: 16px;
     font-size: 12px;
     color: #888;
     text-align: center;
+    line-height: 1.6;
   }
 </style>
 </head>
 <body>
 
-<h1>宝贝积分 · 高保真交互原型</h1>
-<p class="sub">点击屏幕下方的按钮在不同页面 / 状态间切换</p>
+<h1>宝贝积分 · 高保真原型 (v2)</h1>
+<p class="sub">点击首页 ⭐ 图标进入行为模板页 · 点击记一笔页面里的规则 chip 自动填表</p>
 
 <div class="phone-wrap">
 
-  <!-- ============== 手机一：Home ============== -->
-  <div class="phone" id="phone-home">
+  <div class="phone">
     <div class="dynamic-island"></div>
     <div class="status-bar">
       <span>9:41</span>
@@ -615,20 +891,18 @@
       </span>
     </div>
 
-    <!-- Home Screen -->
+    <!-- ====== Home Screen ====== -->
     <div class="screen active" id="home-main">
       <div class="top-bar">
         <div style="width: 44px;"></div>
         <h2>我的孩子们</h2>
         <div class="actions">
-          <div class="icon-btn" title="更多">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8a2 2 0 100-4 2 2 0 000 4zm0 6a2 2 0 100-4 2 2 0 000 4zm0 6a2 2 0 100-4 2 2 0 000 4z"/></svg>
-          </div>
+          <div class="icon-btn" onclick="go('home', 'rules')" title="行为模板">⭐</div>
+          <div class="icon-btn" title="更多">⋮</div>
         </div>
       </div>
 
       <div class="home-grid">
-        <!-- 卡片 1 -->
         <div class="child-card" style="--child-color: #FF9800;" onclick="go('home', 'detail', 0)">
           <div class="color-bar"></div>
           <div class="body">
@@ -636,14 +910,9 @@
             <div class="name">小明</div>
             <div class="points-big pos">126</div>
             <div class="points-label">积分</div>
-            <div class="weekly">
-              <span class="add">本周 +25</span>
-              <span class="sub">-3</span>
-            </div>
+            <div class="weekly"><span class="add">本周 +25</span><span class="sub">-3</span></div>
           </div>
         </div>
-
-        <!-- 卡片 2 -->
         <div class="child-card" style="--child-color: #E91E63;" onclick="go('home', 'detail', 1)">
           <div class="color-bar"></div>
           <div class="body">
@@ -651,14 +920,9 @@
             <div class="name">小红</div>
             <div class="points-big neg">-8</div>
             <div class="points-label">积分</div>
-            <div class="weekly">
-              <span class="add">本周 +10</span>
-              <span class="sub">-18</span>
-            </div>
+            <div class="weekly"><span class="add">本周 +10</span><span class="sub">-18</span></div>
           </div>
         </div>
-
-        <!-- 卡片 3 -->
         <div class="child-card" style="--child-color: #9C27B0;" onclick="go('home', 'detail', 2)">
           <div class="color-bar"></div>
           <div class="body">
@@ -666,14 +930,9 @@
             <div class="name">小华</div>
             <div class="points-big pos">42</div>
             <div class="points-label">积分</div>
-            <div class="weekly">
-              <span class="add">本周 +12</span>
-              <span class="sub">-0</span>
-            </div>
+            <div class="weekly"><span class="add">本周 +12</span><span class="sub">-0</span></div>
           </div>
         </div>
-
-        <!-- 卡片 4 -->
         <div class="child-card" style="--child-color: #2196F3;" onclick="go('home', 'detail', 3)">
           <div class="color-bar"></div>
           <div class="body">
@@ -681,17 +940,13 @@
             <div class="name">小芳</div>
             <div class="points-big pos">88</div>
             <div class="points-label">积分</div>
-            <div class="weekly">
-              <span class="add">本周 +18</span>
-              <span class="sub">-2</span>
-            </div>
+            <div class="weekly"><span class="add">本周 +18</span><span class="sub">-2</span></div>
           </div>
         </div>
       </div>
 
       <div class="fab extended" onclick="go('home', 'add')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        <span class="label">记一笔</span>
+        <span>+</span><span class="label">记一笔</span>
       </div>
     </div>
 
@@ -703,84 +958,78 @@
         <div style="width: 44px;"></div>
       </div>
       <div class="empty-state">
-        <div class="icon-circle">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4a4 4 0 110 8 4 4 0 010-8zm0 10c-3.31 0-8 1.67-8 4v2h16v-2c0-2.33-4.69-4-8-4z"/></svg>
-        </div>
+        <div class="icon-circle">👶</div>
         <h3>还没有添加孩子</h3>
         <p>添加你的第一个孩子，开始记录 TA 的每一次成长</p>
         <button class="btn-primary" onclick="openEditor()">+ 添加孩子</button>
       </div>
     </div>
 
-    <!-- Detail Screen -->
+    <!-- ====== Detail Screen ====== -->
     <div class="screen" id="detail-screen">
       <div class="top-bar detail-bar" id="detail-bar">
-        <div class="icon-btn" onclick="back('detail')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </div>
+        <div class="icon-btn" onclick="back('detail')">←</div>
         <h2 id="detail-name">小明</h2>
         <div class="actions">
-          <div class="icon-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
-          </div>
+          <div class="icon-btn" title="统计">📊</div>
         </div>
       </div>
-
       <div class="summary-card" id="summary-card">
         <div class="label">当前积分</div>
         <div class="big-num pos" id="detail-total">126</div>
         <div class="stats-row">
-          <div class="stat">
-            <div class="v pos" id="detail-week-add">+25</div>
-            <div class="l">本周 +</div>
-          </div>
-          <div class="stat">
-            <div class="v neg" id="detail-week-sub">-3</div>
-            <div class="l">本周 -</div>
-          </div>
-          <div class="stat">
-            <div class="v pos" id="detail-today">+8</div>
-            <div class="l">今日</div>
-          </div>
+          <div class="stat"><div class="v pos" id="detail-week-add">+25</div><div class="l">本周 +</div></div>
+          <div class="stat"><div class="v neg" id="detail-week-sub">-3</div><div class="l">本周 -</div></div>
+          <div class="stat"><div class="v pos" id="detail-today">+8</div><div class="l">今日</div></div>
+        </div>
+      </div>
+      <div class="records-list" id="records-list"></div>
+      <div class="fab child-color" id="detail-fab" onclick="go('detail', 'add')">+</div>
+    </div>
+
+    <!-- ====== Rules Screen (迭代 2 新增) ====== -->
+    <div class="screen" id="rules-screen">
+      <div class="top-bar">
+        <div class="icon-btn" onclick="back('rules')">←</div>
+        <h2>行为模板</h2>
+        <div class="actions">
+          <div class="icon-btn" onclick="openRuleEditor()" title="新建模板">+</div>
+          <div class="icon-btn" onclick="openCategoryManager()" title="更多">⋮</div>
         </div>
       </div>
 
-      <div class="records-list" id="records-list">
-        <!-- 由 JS 填充 -->
+      <div class="filter-row" id="rules-filter">
+        <div class="filter-chip selected" onclick="filterRules(null, this)">全部</div>
       </div>
 
-      <div class="fab child-color" id="detail-fab" onclick="go('detail', 'add')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <div class="rules-list" id="rules-list"></div>
+
+      <div class="fab extended" onclick="openRuleEditor()" style="background: #5b6ee1;">
+        <span>+</span><span class="label">新建模板</span>
       </div>
     </div>
 
-    <!-- Detail Empty -->
-    <div class="screen" id="detail-empty">
-      <div class="top-bar detail-bar">
-        <div class="icon-btn" onclick="back('detail')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    <!-- ====== Rules Empty ====== -->
+    <div class="screen" id="rules-empty">
+      <div class="top-bar">
+        <div class="icon-btn" onclick="back('rules')">←</div>
+        <h2>行为模板</h2>
+        <div class="actions">
+          <div class="icon-btn" onclick="openCategoryManager()">⋮</div>
         </div>
-        <h2>小明</h2>
-        <div style="width: 44px;"></div>
       </div>
       <div class="empty-state">
-        <div class="icon-circle" style="background: rgba(255, 152, 0, 0.1);">
-          <svg viewBox="0 0 24 24" fill="#FF9800"><path d="M12 2l2.39 7.36H22l-6.19 4.5L18.18 22 12 17.27 5.82 22l2.37-8.14L2 9.36h7.61z"/></svg>
-        </div>
-        <h3>还没有记录</h3>
-        <p>点右下角 + 加一条吧</p>
-      </div>
-      <div class="fab child-color" style="--child-color: #FF9800;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <div class="icon-circle">⭐</div>
+        <h3>还没有模板</h3>
+        <p>先创建分类（如"学习"、"生活"），再添加模板（如"刷牙 +5"）</p>
+        <button class="btn-primary" onclick="openCategoryManager()">+ 管理分类</button>
       </div>
     </div>
 
-    <!-- AddRecord Screen -->
+    <!-- ====== AddRecord Screen (含规则选择器) ====== -->
     <div class="screen" id="add-screen">
       <div class="top-bar">
-        <div class="icon-btn" onclick="back('add')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </div>
+        <div class="icon-btn" onclick="back('add')">←</div>
         <h2>记一笔</h2>
         <div style="width: 44px;"></div>
       </div>
@@ -794,17 +1043,14 @@
       </div>
 
       <div class="form">
+        <!-- 规则选择器（迭代 2 新增） -->
+        <div id="add-rule-picker"></div>
+
         <div>
           <label class="field-label">类型</label>
           <div class="type-tabs">
-            <div class="type-tab add active" onclick="setType('add')">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-              奖励
-            </div>
-            <div class="type-tab sub" onclick="setType('sub')">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/></svg>
-              扣减
-            </div>
+            <div class="type-tab add active" onclick="setType('add')">+ 奖励</div>
+            <div class="type-tab sub" onclick="setType('sub')">− 扣减</div>
           </div>
         </div>
 
@@ -834,31 +1080,23 @@
       </div>
     </div>
 
-    <!-- Child Editor Dialog -->
+    <!-- ====== Dialogs ====== -->
     <div class="scrim" id="editor-scrim">
       <div class="dialog">
         <h3>添加孩子</h3>
         <p style="margin-bottom: 12px;">给 TA 起个名字，选个头像和颜色</p>
         <input class="input" type="text" placeholder="姓名" value="小明" style="margin-bottom: 16px;">
-
         <label class="field-label">选个头像</label>
-        <div class="editor-grid" id="avatar-grid">
-          <!-- 由 JS 填充 -->
-        </div>
-
+        <div class="editor-grid" id="avatar-grid"></div>
         <label class="field-label">选个主题色</label>
-        <div class="editor-grid" id="color-grid" style="grid-template-columns: repeat(8, 1fr);">
-          <!-- 由 JS 填充 -->
-        </div>
-
-        <div class="dialog-actions" style="margin-top: 16px;">
+        <div class="editor-grid" id="color-grid" style="grid-template-columns: repeat(8, 1fr);"></div>
+        <div class="dialog-actions">
           <button onclick="closeEditor()">取消</button>
           <button onclick="closeEditor()">保存</button>
         </div>
       </div>
     </div>
 
-    <!-- Delete Confirm -->
     <div class="scrim" id="delete-scrim">
       <div class="dialog">
         <h3>删除这条记录？</h3>
@@ -870,23 +1108,120 @@
       </div>
     </div>
 
-  </div>
-  <!-- 手机结束 -->
+    <!-- 规则编辑弹窗（迭代 2 新增） -->
+    <div class="scrim" id="rule-editor-scrim">
+      <div class="dialog">
+        <h3 id="rule-editor-title">新建模板</h3>
 
+        <div class="field-group">
+          <label class="label">名称</label>
+          <input class="input" type="text" id="rule-name-input" placeholder="如：刷牙、整理房间" value="刷牙">
+        </div>
+
+        <div class="field-group">
+          <label class="label">分数</label>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input class="input" type="text" id="rule-points-input" value="5" style="flex: 1; text-align: center; font-size: 22px; font-weight: 700;">
+            <div class="penalty-toggle">
+              <button class="active add" onclick="togglePenalty(false, this)">奖励</button>
+              <button class="sub" onclick="togglePenalty(true, this)">扣分</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="label">分类</label>
+          <div id="rule-cat-chips" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="label">图标</label>
+          <div id="rule-icon-grid" class="editor-grid" style="grid-template-columns: repeat(8, 1fr);"></div>
+        </div>
+
+        <div class="field-group" style="display: flex; align-items: center; gap: 12px;">
+          <span class="label" style="margin: 0;">启用</span>
+          <div class="switch on" id="rule-enabled-switch" onclick="this.classList.toggle('on')"></div>
+        </div>
+
+        <div class="dialog-actions">
+          <button onclick="closeRuleEditor()">取消</button>
+          <button onclick="closeRuleEditor()">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分类管理弹窗（迭代 2 新增） -->
+    <div class="scrim" id="cat-manager-scrim">
+      <div class="dialog">
+        <h3>管理分类</h3>
+        <p style="margin-bottom: 12px;">删除分类不会删除该分类下的规则，但规则会变为"未分类"。</p>
+        <div class="cat-list" id="cat-list"></div>
+        <button class="btn-secondary" style="width: 100%; margin-top: 12px;" onclick="openCategoryEditor()">+ 新建分类</button>
+        <div class="dialog-actions">
+          <button onclick="closeCategoryManager()">完成</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分类编辑弹窗（迭代 2 新增） -->
+    <div class="scrim" id="cat-editor-scrim">
+      <div class="dialog">
+        <h3>新建分类</h3>
+        <div class="field-group">
+          <label class="label">名称</label>
+          <input class="input" type="text" id="cat-name-input" placeholder="如：学习、生活" value="学习">
+        </div>
+        <div class="field-group">
+          <label class="label">图标</label>
+          <div id="cat-icon-grid" class="editor-grid"></div>
+        </div>
+        <div class="field-group">
+          <label class="label">颜色</label>
+          <div id="cat-color-grid" class="editor-grid" style="grid-template-columns: repeat(6, 1fr);"></div>
+        </div>
+        <div class="dialog-actions">
+          <button onclick="closeCategoryEditor()">取消</button>
+          <button onclick="closeCategoryEditor()">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 删除规则确认（迭代 2 新增） -->
+    <div class="scrim" id="rule-delete-scrim">
+      <div class="dialog">
+        <h3>删除模板？</h3>
+        <p>"<span id="rule-delete-name">刷牙</span>" 将被删除，相关流水的模板引用会置空，但历史记录保留。</p>
+        <div class="dialog-actions">
+          <button onclick="closeRuleDelete()">取消</button>
+          <button class="danger" onclick="closeRuleDelete()">删除</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- 控制面板 -->
 <div class="controls">
-  <button onclick="showScreen('home-main')">首页（有数据）</button>
-  <button onclick="showScreen('home-empty')">首页（空状态）</button>
+  <div class="group-title">核心页面</div>
+  <button onclick="showScreen('home-main')">首页（4 孩）</button>
+  <button onclick="showScreen('home-empty')">首页（空）</button>
   <button onclick="showScreen('detail-screen')">详情页</button>
-  <button onclick="showScreen('detail-empty')">详情（空）</button>
-  <button onclick="showScreen('add-screen')">记一笔</button>
-  <button onclick="openEditor()">添加孩子对话框</button>
-  <button onclick="openDelete()">删除确认框</button>
+  <button onclick="showScreen('rules-screen')">行为模板</button>
+  <button onclick="showScreen('rules-empty')">模板（空）</button>
+  <button onclick="showScreen('add-screen')">记一笔（含规则选择器）</button>
+
+  <div class="group-title">弹窗</div>
+  <button onclick="openEditor()">添加孩子</button>
+  <button onclick="openDelete()">删除流水</button>
+  <button onclick="openRuleEditor()">新建/编辑规则</button>
+  <button onclick="openCategoryManager()">分类管理</button>
+  <button onclick="openCategoryEditor()">新建分类</button>
+  <button onclick="openRuleDelete()">删除规则确认</button>
 </div>
 <p class="legend">
-  💡 提示：点击首页里的孩子卡片 → 进入详情；点击 "+ 记一笔" 或 FAB → 进入记一笔页面；详情页里点击流水 → 弹出删除确认。
+  💡 核心流程：① 首页 ⭐ → 模板管理；② 模板页 + → 新建规则 → 选分类 → 保存；③ 首页记一笔 → 顶部规则 chip 一键填表
 </p>
 
 <script>
@@ -913,12 +1248,38 @@
     ]
   };
 
+  // 分类
+  const categories = [
+    { id: 1, name: '学习', icon: '📚', colorHex: '#5B6EE1' },
+    { id: 2, name: '生活', icon: '🪥', colorHex: '#FF9800' },
+    { id: 3, name: '运动', icon: '⚽', colorHex: '#4CAF50' },
+    { id: 4, name: '习惯', icon: '🌱', colorHex: '#9C27B0' }
+  ];
+
+  // 规则
+  let rules = [
+    { id: 1, name: '完成作业', points: 5, categoryId: 1, icon: '✏️', enabled: true },
+    { id: 2, name: '看书 30 分钟', points: 3, categoryId: 1, icon: '📖', enabled: true },
+    { id: 3, name: '刷牙', points: 5, categoryId: 2, icon: '🪥', enabled: true },
+    { id: 4, name: '整理房间', points: 10, categoryId: 2, icon: '🧹', enabled: true },
+    { id: 5, name: '看电视超时', points: -3, categoryId: 2, icon: '📺', enabled: true },
+    { id: 6, name: '帮妈妈洗碗', points: 8, categoryId: 2, icon: '🍽️', enabled: true },
+    { id: 7, name: '跑步', points: 5, categoryId: 3, icon: '🏃', enabled: true },
+    { id: 8, name: '主动问好', points: 3, categoryId: 4, icon: '👋', enabled: true },
+    { id: 9, name: '打架', points: -10, categoryId: 4, icon: '👊', enabled: false },
+    { id: 10, name: '零食', points: -2, categoryId: 2, icon: '🍬', enabled: true }
+  ];
+
   const avatars = ['🦁','🐯','🐻','🐼','🐨','🦊','🐰','🐱','🐶','🐹','🐸','🦄','🐧','🐤','🦉','🐢','🐳','🦋','🌟','🌈','🍎','🍓','⚽','🎨'];
-  const colors = ['#FF9800','#E91E63','#4CAF50','#2196F3','#9C27B0','#FFEB3B','#795548','#00BCD4'];
+  const childColors = ['#FF9800','#E91E63','#4CAF50','#2196F3','#9C27B0','#FFEB3B','#795548','#00BCD4'];
+  const catIcons = ['📚','✏️','🎨','🎵','🏃','⚽','🍎','🛏️','🧹','🪥','🌱','🚿','📺','🎮','👕','🐶','🌟','💪','🧠','🤝','❤️','⏰','🛒','✨'];
+  const catColors = ['#5B6EE1','#E91E63','#4CAF50','#FF9800','#9C27B0','#00BCD4','#795548','#F44336','#3F51B5','#8BC34A','#FFEB3B','#607D8B'];
 
   let currentPoints = 5;
   let currentType = 'add';
   let currentChildIdx = 0;
+  let selectedRuleId = null;
+  let currentRuleFilter = null;
 
   // ========== 导航 ==========
   function showScreen(id) {
@@ -934,6 +1295,9 @@
     } else if (to === 'add') {
       loadAdd();
       showScreen('add-screen');
+    } else if (to === 'rules') {
+      loadRules();
+      showScreen(rules.length > 0 ? 'rules-screen' : 'rules-empty');
     }
   }
 
@@ -942,7 +1306,7 @@
     else if (from === 'add') {
       if (currentChildIdx !== null) showScreen('detail-screen');
       else showScreen('home-main');
-    }
+    } else if (from === 'rules') showScreen('home-main');
   }
 
   function loadDetail() {
@@ -958,7 +1322,6 @@
     document.getElementById('summary-card').style.setProperty('--child-bg-soft', c.color + '15');
     document.getElementById('detail-fab').style.setProperty('--child-color', c.color);
 
-    // 渲染流水
     const list = document.getElementById('records-list');
     list.innerHTML = '';
     Object.entries(records).forEach(([date, items]) => {
@@ -966,18 +1329,18 @@
       header.className = 'date-header';
       header.textContent = date;
       list.appendChild(header);
-      items.forEach((r, i) => {
+      items.forEach((r) => {
         const card = document.createElement('div');
         card.className = 'record';
         card.onclick = openDelete;
         card.innerHTML = `
-          <div class="dot ${r.type}">${r.type === 'add' ? '+' : '-'}</div>
+          <div class="dot ${r.type}">${r.type === 'add' ? '+' : '−'}</div>
           <div class="info">
             <div class="title">${r.title}</div>
             ${r.note ? `<div class="note">${r.note}</div>` : ''}
             <div class="time">${r.time}</div>
           </div>
-          <div class="delta ${r.type}">${r.type === 'add' ? '+' : '-'}${r.delta}</div>
+          <div class="delta ${r.type}">${r.type === 'add' ? '+' : '−'}${r.delta}</div>
         `;
         list.appendChild(card);
       });
@@ -991,6 +1354,100 @@
     document.getElementById('add-strip').style.setProperty('--child-bg-soft', c.color + '15');
     document.getElementById('add-strip').querySelector('.name').textContent = c.name;
     document.getElementById('add-strip').querySelector('.meta').textContent = '当前积分 ' + c.total;
+    renderAddRulePicker();
+  }
+
+  function loadRules() {
+    // 渲染 filter chips
+    const filterRow = document.getElementById('rules-filter');
+    filterRow.innerHTML = '<div class="filter-chip ' + (currentRuleFilter === null ? 'selected' : '') + '" onclick="filterRules(null, this)">全部</div>';
+    categories.forEach(c => {
+      const chip = document.createElement('div');
+      chip.className = 'filter-chip' + (currentRuleFilter === c.id ? ' selected' : '');
+      chip.onclick = () => filterRules(c.id, chip);
+      chip.innerHTML = `<span>${c.icon}</span><span>${c.name}</span>`;
+      filterRow.appendChild(chip);
+    });
+
+    renderRulesList();
+  }
+
+  function filterRules(catId, el) {
+    currentRuleFilter = catId;
+    document.querySelectorAll('#rules-filter .filter-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    renderRulesList();
+  }
+
+  function renderRulesList() {
+    const filtered = currentRuleFilter === null
+      ? rules
+      : rules.filter(r => r.categoryId === currentRuleFilter);
+
+    const list = document.getElementById('rules-list');
+    list.innerHTML = '';
+
+    if (filtered.length === 0) {
+      list.innerHTML = '<div style="text-align:center; padding: 32px; color: #aaa; font-size: 13px;">该分类下还没有规则</div>';
+      return;
+    }
+
+    // 按分类分组
+    const grouped = {};
+    filtered.forEach(r => {
+      const key = r.categoryId || 'uncat';
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(r);
+    });
+
+    // 渲染
+    const orderedKeys = categories.filter(c => grouped[c.id]).map(c => c.id);
+    if (grouped['uncat']) orderedKeys.push('uncat');
+
+    orderedKeys.forEach(key => {
+      const cat = key === 'uncat' ? null : categories.find(c => c.id === key);
+      const color = cat ? cat.colorHex : '#9e9e9e';
+      const items = grouped[key];
+
+      const header = document.createElement('div');
+      header.className = 'rule-group-header';
+      header.innerHTML = `
+        <span class="dot" style="background: ${color};"></span>
+        <span style="color: ${color};">${cat ? cat.icon : ''} ${cat ? cat.name : '未分类'}</span>
+        <span class="count">${items.length}</span>
+      `;
+      list.appendChild(header);
+
+      items.forEach(r => {
+        const isPenalty = r.points < 0;
+        const sign = isPenalty ? `${r.points}` : `+${r.points}`;
+        const cat = categories.find(c => c.id === r.categoryId);
+        const iconBg = cat ? cat.colorHex : '#9e9e9e';
+        const card = document.createElement('div');
+        card.className = 'rule-card' + (r.enabled ? '' : ' disabled');
+        card.innerHTML = `
+          <div class="ic-circle" style="background: ${iconBg}20;">${r.icon}</div>
+          <div class="info">
+            <div class="nm">${r.name}</div>
+            <div class="meta">${isPenalty ? '惩罚' : '奖励'}</div>
+          </div>
+          <div class="pn ${isPenalty ? 'sub' : 'add'}">${sign}</div>
+          <div class="switch ${r.enabled ? 'on' : ''}" onclick="toggleRule(${r.id}, this)"></div>
+          <div class="icon-btn-sm edit" title="编辑">✏️</div>
+          <div class="icon-btn-sm delete" onclick="openRuleDelete('${r.name}')" title="删除">🗑️</div>
+        `;
+        list.appendChild(card);
+      });
+    });
+  }
+
+  function toggleRule(id, el) {
+    el.classList.toggle('on');
+    const r = rules.find(x => x.id === id);
+    if (r) {
+      r.enabled = el.classList.contains('on');
+      renderRulesList();
+    }
   }
 
   // ========== AddRecord 交互 ==========
@@ -1010,6 +1467,81 @@
     document.getElementById('points-display').textContent = currentPoints;
   }
 
+  function renderAddRulePicker() {
+    const container = document.getElementById('add-rule-picker');
+    if (rules.length === 0) {
+      container.innerHTML = '<div class="rule-picker"><div class="rule-picker-empty">还没有规则模板，点首页 ⭐ 添加</div></div>';
+      return;
+    }
+
+    const enabledRules = rules.filter(r => r.enabled);
+    let html = '<div class="rule-picker">';
+
+    // 按分类分组
+    const grouped = {};
+    enabledRules.forEach(r => {
+      const key = r.categoryId || 'uncat';
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(r);
+    });
+
+    categories.filter(c => grouped[c.id]).forEach(c => {
+      html += `<div class="cat-section">
+        <div class="cat-header">
+          <span class="dot" style="background: ${c.colorHex};"></span>
+          <span style="color: ${c.colorHex};">${c.icon} ${c.name}</span>
+        </div>
+        <div class="chip-row">`;
+      grouped[c.id].forEach(r => {
+        const isPenalty = r.points < 0;
+        const sign = isPenalty ? `${r.points}` : `+${r.points}`;
+        const selected = selectedRuleId === r.id;
+        html += `<div class="rule-chip ${selected ? 'selected' : ''}" style="--chip-color: ${c.colorHex};" onclick="selectRule(${r.id})">
+          <span class="ic">${r.icon}</span>
+          <span class="nm">${r.name}</span>
+          <span class="pn ${isPenalty ? 'sub' : 'add'}">${sign}</span>
+        </div>`;
+      });
+      html += '</div></div>';
+    });
+
+    // 未分类
+    if (grouped['uncat']) {
+      html += `<div class="cat-section">
+        <div class="cat-header">
+          <span class="dot" style="background: #9e9e9e;"></span>
+          <span style="color: #9e9e9e;">未分类</span>
+        </div>
+        <div class="chip-row">`;
+      grouped['uncat'].forEach(r => {
+        const isPenalty = r.points < 0;
+        const sign = isPenalty ? `${r.points}` : `+${r.points}`;
+        const selected = selectedRuleId === r.id;
+        html += `<div class="rule-chip ${selected ? 'selected' : ''}" onclick="selectRule(${r.id})">
+          <span class="ic">${r.icon}</span>
+          <span class="nm">${r.name}</span>
+          <span class="pn ${isPenalty ? 'sub' : 'add'}">${sign}</span>
+        </div>`;
+      });
+      html += '</div></div>';
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  function selectRule(id) {
+    const r = rules.find(x => x.id === id);
+    if (!r) return;
+    selectedRuleId = id;
+    currentPoints = Math.abs(r.points);
+    currentType = r.points < 0 ? 'sub' : 'add';
+    document.getElementById('points-display').textContent = currentPoints;
+    document.getElementById('title-input').value = r.name;
+    setType(currentType);
+    renderAddRulePicker();
+  }
+
   // ========== Dialog ==========
   function openEditor() {
     const ag = document.getElementById('avatar-grid');
@@ -1026,7 +1558,7 @@
     });
     const cg = document.getElementById('color-grid');
     cg.innerHTML = '';
-    colors.forEach((c, i) => {
+    childColors.forEach((c, i) => {
       const d = document.createElement('div');
       d.className = 'picker-cell color' + (i === 0 ? ' selected' : '');
       d.style.background = c;
@@ -1042,6 +1574,118 @@
 
   function openDelete() { document.getElementById('delete-scrim').classList.add('show'); }
   function closeDelete() { document.getElementById('delete-scrim').classList.remove('show'); }
+
+  // 规则编辑器
+  function openRuleEditor() {
+    // 分类 chips
+    const catChips = document.getElementById('rule-cat-chips');
+    catChips.innerHTML = '';
+    categories.forEach((c, i) => {
+      const chip = document.createElement('div');
+      const selected = i === 0;
+      chip.className = 'filter-chip' + (selected ? ' selected' : '');
+      chip.style.borderColor = c.colorHex;
+      chip.style.color = selected ? 'white' : c.colorHex;
+      chip.style.background = selected ? c.colorHex : 'white';
+      chip.innerHTML = `<span>${c.icon}</span><span>${c.name}</span>`;
+      chip.onclick = () => {
+        catChips.querySelectorAll('.filter-chip').forEach(x => {
+          x.classList.remove('selected');
+          x.style.background = 'white';
+          const origColor = categories.find(c => c.name === x.querySelector('span:last-child').textContent)?.colorHex;
+          if (origColor) x.style.color = origColor;
+        });
+        chip.classList.add('selected');
+        chip.style.background = c.colorHex;
+        chip.style.color = 'white';
+      };
+      catChips.appendChild(chip);
+    });
+
+    // 图标 grid
+    const ig = document.getElementById('rule-icon-grid');
+    ig.innerHTML = '';
+    catIcons.slice(0, 16).forEach((emoji, i) => {
+      const d = document.createElement('div');
+      d.className = 'picker-cell' + (i === 0 ? ' selected' : '');
+      d.textContent = emoji;
+      d.onclick = () => {
+        ig.querySelectorAll('.picker-cell').forEach(x => x.classList.remove('selected'));
+        d.classList.add('selected');
+      };
+      ig.appendChild(d);
+    });
+
+    document.getElementById('rule-editor-title').textContent = '新建模板';
+    document.getElementById('rule-name-input').value = '刷牙';
+    document.getElementById('rule-points-input').value = '5';
+    document.getElementById('rule-editor-scrim').classList.add('show');
+  }
+  function closeRuleEditor() { document.getElementById('rule-editor-scrim').classList.remove('show'); }
+
+  function togglePenalty(isPenalty, el) {
+    el.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('rule-points-input').value = Math.abs(parseInt(document.getElementById('rule-points-input').value) || 0);
+  }
+
+  // 分类管理
+  function openCategoryManager() {
+    const list = document.getElementById('cat-list');
+    list.innerHTML = '';
+    categories.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'cat-list-item';
+      row.innerHTML = `
+        <span class="ic">${c.icon}</span>
+        <span class="nm">${c.name}</span>
+        <span class="color-dot" style="background: ${c.colorHex};"></span>
+        <div class="icon-btn-sm edit" title="编辑">✏️</div>
+        <div class="icon-btn-sm delete" title="删除">🗑️</div>
+      `;
+      list.appendChild(row);
+    });
+    document.getElementById('cat-manager-scrim').classList.add('show');
+  }
+  function closeCategoryManager() { document.getElementById('cat-manager-scrim').classList.remove('show'); }
+
+  function openCategoryEditor() {
+    // 图标 grid
+    const ig = document.getElementById('cat-icon-grid');
+    ig.innerHTML = '';
+    catIcons.forEach((emoji, i) => {
+      const d = document.createElement('div');
+      d.className = 'picker-cell' + (i === 0 ? ' selected' : '');
+      d.textContent = emoji;
+      d.onclick = () => {
+        ig.querySelectorAll('.picker-cell').forEach(x => x.classList.remove('selected'));
+        d.classList.add('selected');
+      };
+      ig.appendChild(d);
+    });
+    // 颜色 grid
+    const cg = document.getElementById('cat-color-grid');
+    cg.innerHTML = '';
+    catColors.forEach((c, i) => {
+      const d = document.createElement('div');
+      d.className = 'picker-cell color' + (i === 0 ? ' selected' : '');
+      d.style.background = c;
+      d.onclick = () => {
+        cg.querySelectorAll('.picker-cell').forEach(x => x.classList.remove('selected'));
+        d.classList.add('selected');
+      };
+      cg.appendChild(d);
+    });
+    document.getElementById('cat-name-input').value = '学习';
+    document.getElementById('cat-editor-scrim').classList.add('show');
+  }
+  function closeCategoryEditor() { document.getElementById('cat-editor-scrim').classList.remove('show'); }
+
+  function openRuleDelete(name) {
+    document.getElementById('rule-delete-name').textContent = name;
+    document.getElementById('rule-delete-scrim').classList.add('show');
+  }
+  function closeRuleDelete() { document.getElementById('rule-delete-scrim').classList.remove('show'); }
 
   // 初始化
   showScreen('home-main');

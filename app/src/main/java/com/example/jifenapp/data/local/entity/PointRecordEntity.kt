@@ -30,10 +30,17 @@ enum class RecordType { ADD, SUBTRACT }
             parentColumns = ["id"],
             childColumns = ["childId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = PointRuleEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["ruleId"],
+            onDelete = ForeignKey.SET_NULL
         )
     ],
     indices = [
         Index("childId"),
+        Index("ruleId"),
         Index("createdAt"),
         Index(value = ["childId", "createdAt"])
     ]
@@ -47,7 +54,7 @@ data class PointRecordEntity(
     /** 模板名快照；自由输入时即用户填的标题 */
     val title: String,
     val note: String? = null,
-    /** 预留字段，迭代 2 接入模板时启用。当前先不作为外键，避免引入未完成表 */
+    /** 来源模板 id，可空（自由输入时为空）；删除模板后置 null（SET_NULL） */
     val ruleId: Long? = null,
     val createdAt: Long = System.currentTimeMillis()
 )

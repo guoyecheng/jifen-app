@@ -90,6 +90,13 @@ fun AddRecordScreen(
                 total = state.childTotalPoints
             )
 
+            // 规则快捷选择（迭代 2 新增）
+            RulePickerGrid(
+                rules = state.rules,
+                selectedRuleId = state.selectedRuleId,
+                onSelect = viewModel::selectRule
+            )
+
             // 类型 Tab
             TypeTabs(
                 type = state.type,

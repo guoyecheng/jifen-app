@@ -21,4 +21,7 @@ sealed class Routes(val route: String) {
         const val ARG_CHILD_ID = "childId"
         fun build(childId: Long): String = "record/$childId"
     }
+
+    /** 行为模板管理 */
+    data object Rules : Routes("rules")
 }

@@ -21,8 +21,15 @@
 - 三个核心页面：首页 / 孩子详情 / 记一笔
 - 通用组件（骨架屏、动画数字、空状态等）
 
+✅ **迭代 2（行为模板）完成**
+- Category 分类表 + PointRule 模板表 + 外键
+- Room v2 + 自动迁移
+- RulesScreen：按分类筛选 / 启用开关 / 编辑 / 删除
+- CategoryEditorDialog + RuleEditorDialog
+- AddRecordScreen 接入 RulePickerGrid：点模板自动填分数/类型/标题
+- 首页 TopAppBar 加入口图标
+
 ⏳ 待开始
-- 迭代 2：多孩完善 + 行为模板
 - 迭代 3：统计图表
 - 迭代 4：设置 + 备份导出
 

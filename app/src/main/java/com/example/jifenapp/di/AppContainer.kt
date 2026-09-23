@@ -2,8 +2,10 @@ package com.example.jifenapp.di
 
 import android.content.Context
 import com.example.jifenapp.data.local.JifenDatabase
+import com.example.jifenapp.data.repository.CategoryRepository
 import com.example.jifenapp.data.repository.ChildRepository
 import com.example.jifenapp.data.repository.PointRecordRepository
+import com.example.jifenapp.data.repository.PointRuleRepository
 
 /**
  * 简易依赖容器。Application.onCreate() 创建一次。
@@ -16,4 +18,8 @@ class AppContainer(context: Context) {
     val childRepository: ChildRepository = ChildRepository(database.childDao())
     val pointRecordRepository: PointRecordRepository =
         PointRecordRepository(database.pointRecordDao())
+    val pointRuleRepository: PointRuleRepository =
+        PointRuleRepository(database.pointRuleDao())
+    val categoryRepository: CategoryRepository =
+        CategoryRepository(database.categoryDao())
 }

@@ -157,13 +157,13 @@ com.example.jifenapp/
 
 **验收**：能添加孩子、加减流水、查看列表，积分正确。
 
-### 迭代 2：多孩 + 行为模板
+### 迭代 2：多孩 + 行为模板 ✅
 - 新增 `CategoryEntity`、`PointRuleEntity` 及 DAO/Repository
-- `RulesScreen` + `RuleEditorDialog`
+- `RulesScreen` + `RuleEditorDialog` + `CategoryEditorDialog`
 - `AddRecordScreen` 接入 `RulePickerGrid`
-- `SettingsScreen` 入口 + 孩子管理 `ChildEditorDialog`
+- HomeScreen TopAppBar 加入口图标
 
-**验收**：能管理多孩，CRUD 模板，点模板即可记流水。
+**验收**：能管理多孩，CRUD 模板与分类，点模板即可记流水。
 
 ### 迭代 3：统计图表
 - 扩展 `PointRecordRepository`：observeTotal / observeRange / observeByCategory / observeDailyTrend

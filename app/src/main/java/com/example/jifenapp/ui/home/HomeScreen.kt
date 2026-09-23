@@ -56,7 +56,8 @@ import com.example.jifenapp.ui.child.ChildEditorDialog
 fun HomeScreen(
     viewModel: HomeViewModel,
     onChildClick: (Long) -> Unit,
-    onAddRecord: (Long) -> Unit
+    onAddRecord: (Long) -> Unit,
+    onOpenRules: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     var showAddChildDialog by remember { mutableStateOf(false) }
@@ -64,7 +65,15 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("我的孩子们", fontWeight = FontWeight.SemiBold) }
+                title = { Text("我的孩子们", fontWeight = FontWeight.SemiBold) },
+                actions = {
+                    IconButton(onClick = onOpenRules) {
+                        Icon(
+                            androidx.compose.material.icons.Icons.Default.Star,
+                            contentDescription = "行为模板"
+                        )
+                    }
+                }
             )
         },
         floatingActionButton = {

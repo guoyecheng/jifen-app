@@ -16,6 +16,8 @@ import com.example.jifenapp.ui.home.HomeScreen
 import com.example.jifenapp.ui.home.HomeViewModel
 import com.example.jifenapp.ui.record.AddRecordScreen
 import com.example.jifenapp.ui.record.AddRecordViewModel
+import com.example.jifenapp.ui.rules.RulesScreen
+import com.example.jifenapp.ui.rules.RulesViewModel
 import androidx.compose.ui.platform.LocalContext
 import com.example.jifenapp.JifenApplication
 import com.example.jifenapp.di.viewModelFactory
@@ -41,7 +43,20 @@ fun JifenNavHost(navController: NavHostController) {
                 },
                 onAddRecord = { childId ->
                     navController.navigate(Routes.AddRecord.build(childId))
+                },
+                onOpenRules = {
+                    navController.navigate(Routes.Rules.route)
                 }
+            )
+        }
+
+        composable(Routes.Rules.route) {
+            val vm: RulesViewModel = viewModel(
+                factory = viewModelFactory { RulesViewModel.create() }
+            )
+            RulesScreen(
+                viewModel = vm,
+                onBack = { navController.popBackStack() }
             )
         }
 
