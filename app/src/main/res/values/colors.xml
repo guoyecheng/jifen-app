@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App 启动占位色，迭代 1 主要用 Compose 动态颜色，此处仅保留必要定义 -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="ic_launcher_background">#5B6EE1</color>
+</resources>

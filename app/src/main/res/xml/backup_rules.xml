@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 备份规则：迭代 4 启用 -->
+<full-backup-content>
+    <!-- 暂时排除 Room 数据库和 DataStore，后续迭代按需调整 -->
+    <exclude domain="database" path="jifen.db" />
+    <exclude domain="database" path="jifen.db-journal" />
+</full-backup-content>

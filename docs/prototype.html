@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宝贝积分 · 高保真原型</title>
+<style>
+  /* ================== 基础 ================== */
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, #f0f2f8 0%, #e8ebf5 100%);
+    color: #1a1b1f;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 64px;
+    user-select: none;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  .sub {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+  }
+
+  /* ================== 手机外壳 ================== */
+  .phone-wrap {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .phone {
+    width: 390px;
+    height: 800px;
+    background: #fff;
+    border-radius: 40px;
+    box-shadow:
+      0 0 0 12px #1a1b1f,
+      0 0 0 14px #2a2c32,
+      0 30px 80px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 顶部状态栏 */
+  .status-bar {
+    height: 32px;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1b1f;
+    flex-shrink: 0;
+    z-index: 5;
+  }
+  .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+
+  /* 灵动岛 */
+  .dynamic-island {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 28px;
+    background: #000;
+    border-radius: 16px;
+    z-index: 10;
+  }
+
+  /* 屏幕内容 */
+  .screen {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    background: #f7f7fb;
+    display: none;
+    flex-direction: column;
+  }
+  .screen.active { display: flex; animation: fadein 240ms ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* ================== TopAppBar ================== */
+  .top-bar {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    flex-shrink: 0;
+    background: var(--top-bg, transparent);
+    position: relative;
+  }
+  .top-bar h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--top-title, #1a1b1f);
+    margin-left: 8px;
+    flex: 1;
+  }
+  .top-bar .icon-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 22px;
+    cursor: pointer;
+    color: var(--top-title, #1a1b1f);
+    transition: background 200ms;
+  }
+  .top-bar .icon-btn:hover { background: rgba(0,0,0,0.05); }
+  .top-bar .icon-btn svg { width: 24px; height: 24px; }
+  .top-bar .actions { display: flex; gap: 4px; }
+
+  /* ================== HomeScreen ================== */
+  .home-grid {
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    align-content: start;
+  }
+
+  .child-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: transform 200ms, box-shadow 200ms;
+  }
+  .child-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .child-card .color-bar { height: 8px; background: var(--child-color); }
+  .child-card .body { padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--child-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .avatar.lg { width: 72px; height: 72px; font-size: 36px; }
+  .avatar.md { width: 48px; height: 48px; font-size: 24px; }
+  .avatar.sm { width: 36px; height: 36px; font-size: 18px; border-radius: 18px; }
+
+  .child-card .name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1b1f;
+  }
+  .points-big {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    transition: color 200ms;
+  }
+  .points-big.pos { color: #2e7d32; }
+  .points-big.neg { color: #c62828; }
+  .points-big.zero { color: #1a1b1f; }
+  .points-label {
+    font-size: 11px;
+    color: #888;
+    font-weight: 500;
+  }
+  .weekly {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .weekly .add { color: #2e7d32; }
+  .weekly .sub { color: #c62828; }
+
+  /* 空状态 */
+  .empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+  }
+  .empty-state .icon-circle {
+    width: 96px;
+    height: 96px;
+    border-radius: 48px;
+    background: rgba(91, 110, 225, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .empty-state .icon-circle svg { width: 48px; height: 48px; color: #5b6ee1; }
+  .empty-state h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .empty-state p { font-size: 14px; color: #888; margin-bottom: 24px; max-width: 260px; }
+
+  /* FAB */
+  .fab {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    background: #5b6ee1;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(91, 110, 225, 0.4);
+    cursor: pointer;
+    transition: transform 200ms;
+  }
+  .fab:hover { transform: scale(1.05); }
+  .fab svg { width: 24px; height: 24px; }
+  .fab.extended {
+    width: auto;
+    padding: 0 20px;
+    gap: 8px;
+    border-radius: 28px;
+  }
+  .fab .label { font-size: 14px; font-weight: 600; }
+  .fab.child-color { background: var(--child-color); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+  /* 按钮 */
+  .btn-primary {
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 12px;
+    background: #5b6ee1;
+    color: white;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 200ms, opacity 200ms;
+  }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-secondary {
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 12px;
+    background: transparent;
+    color: #5b6ee1;
+    border: 1px solid #5b6ee1;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* ================== ChildDetail ================== */
+  .detail-bar {
+    background: var(--child-bg, transparent);
+    backdrop-filter: blur(8px);
+  }
+  .summary-card {
+    margin: 16px;
+    padding: 24px 20px;
+    background: var(--child-bg-soft, rgba(91, 110, 225, 0.08));
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .summary-card .label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .summary-card .big-num {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .summary-card .big-num.pos { color: #2e7d32; }
+  .summary-card .big-num.neg { color: #c62828; }
+  .summary-card .big-num.zero { color: #1a1b1f; }
+  .stats-row {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .stat .v { font-size: 20px; font-weight: 600; }
+  .stat .v.pos { color: #2e7d32; }
+  .stat .v.neg { color: #c62828; }
+  .stat .l { font-size: 11px; color: #888; }
+
+  /* 流水 */
+  .records-list {
+    padding: 8px 16px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .date-header {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+    padding: 8px 4px 4px;
+  }
+  .record {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: background 200ms;
+  }
+  .record:hover { background: #f8f9fc; }
+  .record .dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .record .dot.add { background: rgba(46, 125, 50, 0.15); color: #2e7d32; }
+  .record .dot.sub { background: rgba(198, 40, 40, 0.15); color: #c62828; }
+  .record .info { flex: 1; min-width: 0; }
+  .record .title { font-size: 14px; font-weight: 500; color: #1a1b1f; }
+  .record .note { font-size: 12px; color: #888; margin-top: 2px; }
+  .record .time { font-size: 11px; color: #aaa; margin-top: 2px; }
+  .record .delta {
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .record .delta.add { color: #2e7d32; }
+  .record .delta.sub { color: #c62828; }
+
+  /* ================== AddRecord ================== */
+  .child-strip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--child-bg-soft, rgba(91, 110, 225, 0.08));
+  }
+  .child-strip .info .name { font-size: 15px; font-weight: 600; }
+  .child-strip .info .meta { font-size: 12px; color: #888; margin-top: 2px; }
+
+  .form {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+  }
+
+  .form label.field-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .type-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .type-tab {
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid #e7e8f0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+  }
+  .type-tab.active.add { background: #2e7d32; color: white; border-color: #2e7d32; }
+  .type-tab.active.sub { background: #c62828; color: white; border-color: #c62828; }
+
+  .points-field {
+    background: white;
+    border: 1px solid #e7e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--input-color, #1a1b1f);
+    margin-bottom: 12px;
+  }
+  .points-field.add { --input-color: #2e7d32; }
+  .points-field.sub { --input-color: #c62828; }
+  .points-adj {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .points-adj button {
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #e7e8f0;
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #1a1b1f;
+    transition: background 200ms;
+  }
+  .points-adj button:hover { background: #f0f2f8; }
+
+  .input {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid #e7e8f0;
+    background: white;
+    padding: 0 16px;
+    font-size: 14px;
+    color: #1a1b1f;
+    outline: none;
+    font-family: inherit;
+  }
+  .input:focus { border-color: #5b6ee1; }
+  textarea.input {
+    height: auto;
+    min-height: 80px;
+    padding: 12px 16px;
+    resize: none;
+  }
+
+  .save-btn {
+    height: 52px;
+    border-radius: 12px;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 200ms, opacity 200ms;
+  }
+  .save-btn:hover { transform: translateY(-1px); }
+  .save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .save-btn.add { background: #2e7d32; }
+  .save-btn.sub { background: #c62828; }
+
+  /* ================== Modal / Dialog ================== */
+  .scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 100;
+    animation: fadein 200ms ease;
+  }
+  .scrim.show { display: flex; }
+  .dialog {
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: scalein 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes scalein { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .dialog h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .dialog p { font-size: 14px; color: #666; margin-bottom: 16px; }
+  .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .dialog-actions button {
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: #5b6ee1;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .dialog-actions button.danger { color: #c62828; }
+
+  /* ChildEditor 头像 / 颜色选择 */
+  .editor-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .picker-cell {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f2f8;
+    cursor: pointer;
+    font-size: 22px;
+    border: 2px solid transparent;
+    transition: transform 200ms;
+  }
+  .picker-cell:hover { transform: scale(1.1); }
+  .picker-cell.selected {
+    border-color: #5b6ee1;
+    background: #fff;
+  }
+  .picker-cell.color {
+    font-size: 0;
+    position: relative;
+  }
+  .picker-cell.color.selected::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* ================== 控制面板 ================== */
+  .controls {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 880px;
+  }
+  .controls button {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 200ms;
+  }
+  .controls button:hover { background: #5b6ee1; color: white; border-color: #5b6ee1; }
+  .controls button.active { background: #5b6ee1; color: white; border-color: #5b6ee1; }
+  .legend {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>宝贝积分 · 高保真交互原型</h1>
+<p class="sub">点击屏幕下方的按钮在不同页面 / 状态间切换</p>
+
+<div class="phone-wrap">
+
+  <!-- ============== 手机一：Home ============== -->
+  <div class="phone" id="phone-home">
+    <div class="dynamic-island"></div>
+    <div class="status-bar">
+      <span>9:41</span>
+      <span class="icons">
+        <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><path d="M1 7h2v4H1zM5 5h2v6H5zM9 3h2v8H9zM13 0h2v11h-2z" fill="currentColor"/></svg>
+        <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><path d="M8 2.5C5.5 2.5 3.3 3.6 1.7 5.4L1 5l.7-.6C3.5 2.5 5.7 1.5 8 1.5s4.5 1 6.3 2.9l.7.6-.7.4C12.7 3.6 10.5 2.5 8 2.5zm0 3a4 4 0 00-2.8 1.2L8 9.5l2.8-2.8A4 4 0 008 5.5z" fill="currentColor"/></svg>
+        <svg width="22" height="11" viewBox="0 0 22 11" fill="none"><rect x="0.5" y="0.5" width="18" height="9" rx="2" stroke="currentColor"/><rect x="2" y="2" width="15" height="6" rx="1" fill="currentColor"/><rect x="20" y="3" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+      </span>
+    </div>
+
+    <!-- Home Screen -->
+    <div class="screen active" id="home-main">
+      <div class="top-bar">
+        <div style="width: 44px;"></div>
+        <h2>我的孩子们</h2>
+        <div class="actions">
+          <div class="icon-btn" title="更多">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8a2 2 0 100-4 2 2 0 000 4zm0 6a2 2 0 100-4 2 2 0 000 4zm0 6a2 2 0 100-4 2 2 0 000 4z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-grid">
+        <!-- 卡片 1 -->
+        <div class="child-card" style="--child-color: #FF9800;" onclick="go('home', 'detail', 0)">
+          <div class="color-bar"></div>
+          <div class="body">
+            <div class="avatar">🦁</div>
+            <div class="name">小明</div>
+            <div class="points-big pos">126</div>
+            <div class="points-label">积分</div>
+            <div class="weekly">
+              <span class="add">本周 +25</span>
+              <span class="sub">-3</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 2 -->
+        <div class="child-card" style="--child-color: #E91E63;" onclick="go('home', 'detail', 1)">
+          <div class="color-bar"></div>
+          <div class="body">
+            <div class="avatar">🐰</div>
+            <div class="name">小红</div>
+            <div class="points-big neg">-8</div>
+            <div class="points-label">积分</div>
+            <div class="weekly">
+              <span class="add">本周 +10</span>
+              <span class="sub">-18</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 3 -->
+        <div class="child-card" style="--child-color: #9C27B0;" onclick="go('home', 'detail', 2)">
+          <div class="color-bar"></div>
+          <div class="body">
+            <div class="avatar">🐼</div>
+            <div class="name">小华</div>
+            <div class="points-big pos">42</div>
+            <div class="points-label">积分</div>
+            <div class="weekly">
+              <span class="add">本周 +12</span>
+              <span class="sub">-0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 4 -->
+        <div class="child-card" style="--child-color: #2196F3;" onclick="go('home', 'detail', 3)">
+          <div class="color-bar"></div>
+          <div class="body">
+            <div class="avatar">🦊</div>
+            <div class="name">小芳</div>
+            <div class="points-big pos">88</div>
+            <div class="points-label">积分</div>
+            <div class="weekly">
+              <span class="add">本周 +18</span>
+              <span class="sub">-2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fab extended" onclick="go('home', 'add')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <span class="label">记一笔</span>
+      </div>
+    </div>
+
+    <!-- Home 空状态 -->
+    <div class="screen" id="home-empty">
+      <div class="top-bar">
+        <div style="width: 44px;"></div>
+        <h2>我的孩子们</h2>
+        <div style="width: 44px;"></div>
+      </div>
+      <div class="empty-state">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4a4 4 0 110 8 4 4 0 010-8zm0 10c-3.31 0-8 1.67-8 4v2h16v-2c0-2.33-4.69-4-8-4z"/></svg>
+        </div>
+        <h3>还没有添加孩子</h3>
+        <p>添加你的第一个孩子，开始记录 TA 的每一次成长</p>
+        <button class="btn-primary" onclick="openEditor()">+ 添加孩子</button>
+      </div>
+    </div>
+
+    <!-- Detail Screen -->
+    <div class="screen" id="detail-screen">
+      <div class="top-bar detail-bar" id="detail-bar">
+        <div class="icon-btn" onclick="back('detail')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </div>
+        <h2 id="detail-name">小明</h2>
+        <div class="actions">
+          <div class="icon-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-card" id="summary-card">
+        <div class="label">当前积分</div>
+        <div class="big-num pos" id="detail-total">126</div>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="v pos" id="detail-week-add">+25</div>
+            <div class="l">本周 +</div>
+          </div>
+          <div class="stat">
+            <div class="v neg" id="detail-week-sub">-3</div>
+            <div class="l">本周 -</div>
+          </div>
+          <div class="stat">
+            <div class="v pos" id="detail-today">+8</div>
+            <div class="l">今日</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="records-list" id="records-list">
+        <!-- 由 JS 填充 -->
+      </div>
+
+      <div class="fab child-color" id="detail-fab" onclick="go('detail', 'add')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+    </div>
+
+    <!-- Detail Empty -->
+    <div class="screen" id="detail-empty">
+      <div class="top-bar detail-bar">
+        <div class="icon-btn" onclick="back('detail')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </div>
+        <h2>小明</h2>
+        <div style="width: 44px;"></div>
+      </div>
+      <div class="empty-state">
+        <div class="icon-circle" style="background: rgba(255, 152, 0, 0.1);">
+          <svg viewBox="0 0 24 24" fill="#FF9800"><path d="M12 2l2.39 7.36H22l-6.19 4.5L18.18 22 12 17.27 5.82 22l2.37-8.14L2 9.36h7.61z"/></svg>
+        </div>
+        <h3>还没有记录</h3>
+        <p>点右下角 + 加一条吧</p>
+      </div>
+      <div class="fab child-color" style="--child-color: #FF9800;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+    </div>
+
+    <!-- AddRecord Screen -->
+    <div class="screen" id="add-screen">
+      <div class="top-bar">
+        <div class="icon-btn" onclick="back('add')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </div>
+        <h2>记一笔</h2>
+        <div style="width: 44px;"></div>
+      </div>
+
+      <div class="child-strip" id="add-strip">
+        <div class="avatar md" style="background: #FF9800;">🦁</div>
+        <div class="info">
+          <div class="name">小明</div>
+          <div class="meta">当前积分 126</div>
+        </div>
+      </div>
+
+      <div class="form">
+        <div>
+          <label class="field-label">类型</label>
+          <div class="type-tabs">
+            <div class="type-tab add active" onclick="setType('add')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              奖励
+            </div>
+            <div class="type-tab sub" onclick="setType('sub')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/></svg>
+              扣减
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="field-label">分数</label>
+          <div class="points-field add" id="points-display">5</div>
+          <div class="points-adj">
+            <button onclick="adj(-5)">-5</button>
+            <button onclick="adj(-1)">-1</button>
+            <button onclick="adj(1)">+1</button>
+            <button onclick="adj(5)">+5</button>
+            <button onclick="adj(10)">+10</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="field-label">标题（必填）</label>
+          <input class="input" id="title-input" type="text" placeholder="例如：刷牙、整理房间" value="刷牙">
+        </div>
+
+        <div>
+          <label class="field-label">备注（可选）</label>
+          <textarea class="input" placeholder="补一句说说..." rows="2"></textarea>
+        </div>
+
+        <button class="save-btn add" id="save-btn">保存奖励</button>
+      </div>
+    </div>
+
+    <!-- Child Editor Dialog -->
+    <div class="scrim" id="editor-scrim">
+      <div class="dialog">
+        <h3>添加孩子</h3>
+        <p style="margin-bottom: 12px;">给 TA 起个名字，选个头像和颜色</p>
+        <input class="input" type="text" placeholder="姓名" value="小明" style="margin-bottom: 16px;">
+
+        <label class="field-label">选个头像</label>
+        <div class="editor-grid" id="avatar-grid">
+          <!-- 由 JS 填充 -->
+        </div>
+
+        <label class="field-label">选个主题色</label>
+        <div class="editor-grid" id="color-grid" style="grid-template-columns: repeat(8, 1fr);">
+          <!-- 由 JS 填充 -->
+        </div>
+
+        <div class="dialog-actions" style="margin-top: 16px;">
+          <button onclick="closeEditor()">取消</button>
+          <button onclick="closeEditor()">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirm -->
+    <div class="scrim" id="delete-scrim">
+      <div class="dialog">
+        <h3>删除这条记录？</h3>
+        <p>"刷牙" 将被删除，积分也会回退。</p>
+        <div class="dialog-actions">
+          <button onclick="closeDelete()">取消</button>
+          <button class="danger" onclick="closeDelete()">删除</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- 手机结束 -->
+
+</div>
+
+<!-- 控制面板 -->
+<div class="controls">
+  <button onclick="showScreen('home-main')">首页（有数据）</button>
+  <button onclick="showScreen('home-empty')">首页（空状态）</button>
+  <button onclick="showScreen('detail-screen')">详情页</button>
+  <button onclick="showScreen('detail-empty')">详情（空）</button>
+  <button onclick="showScreen('add-screen')">记一笔</button>
+  <button onclick="openEditor()">添加孩子对话框</button>
+  <button onclick="openDelete()">删除确认框</button>
+</div>
+<p class="legend">
+  💡 提示：点击首页里的孩子卡片 → 进入详情；点击 "+ 记一笔" 或 FAB → 进入记一笔页面；详情页里点击流水 → 弹出删除确认。
+</p>
+
+<script>
+  // ========== 数据 ==========
+  const children = [
+    { name: '小明', avatar: '🦁', color: '#FF9800', total: 126, weekAdd: 25, weekSub: 3, today: 8 },
+    { name: '小红', avatar: '🐰', color: '#E91E63', total: -8, weekAdd: 10, weekSub: 18, today: -2 },
+    { name: '小华', avatar: '🐼', color: '#9C27B0', total: 42, weekAdd: 12, weekSub: 0, today: 0 },
+    { name: '小芳', avatar: '🦊', color: '#2196F3', total: 88, weekAdd: 18, weekSub: 2, today: 5 }
+  ];
+
+  const records = {
+    '2026-09-22': [
+      { type: 'add', title: '刷牙', note: '', time: '2 分钟前', delta: 5 },
+      { type: 'sub', title: '看电视超时', note: '超过了 30 分钟', time: '30 分钟前', delta: 3 },
+      { type: 'add', title: '整理房间', note: '', time: '今天 18:30', delta: 10 }
+    ],
+    '2026-09-21': [
+      { type: 'add', title: '帮妈妈洗碗', note: '主动帮忙', time: '昨天 19:15', delta: 8 },
+      { type: 'add', title: '完成作业', note: '', time: '昨天 16:00', delta: 5 }
+    ],
+    '2026-09-20': [
+      { type: 'sub', title: '和弟弟吵架', note: '', time: '2 天前', delta: 5 }
+    ]
+  };
+
+  const avatars = ['🦁','🐯','🐻','🐼','🐨','🦊','🐰','🐱','🐶','🐹','🐸','🦄','🐧','🐤','🦉','🐢','🐳','🦋','🌟','🌈','🍎','🍓','⚽','🎨'];
+  const colors = ['#FF9800','#E91E63','#4CAF50','#2196F3','#9C27B0','#FFEB3B','#795548','#00BCD4'];
+
+  let currentPoints = 5;
+  let currentType = 'add';
+  let currentChildIdx = 0;
+
+  // ========== 导航 ==========
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function go(from, to, childIdx) {
+    if (to === 'detail') {
+      currentChildIdx = childIdx ?? 0;
+      loadDetail();
+      showScreen('detail-screen');
+    } else if (to === 'add') {
+      loadAdd();
+      showScreen('add-screen');
+    }
+  }
+
+  function back(from) {
+    if (from === 'detail') showScreen('home-main');
+    else if (from === 'add') {
+      if (currentChildIdx !== null) showScreen('detail-screen');
+      else showScreen('home-main');
+    }
+  }
+
+  function loadDetail() {
+    const c = children[currentChildIdx];
+    document.getElementById('detail-name').textContent = c.name;
+    document.getElementById('detail-total').textContent = c.total;
+    document.getElementById('detail-total').className = 'big-num ' + (c.total > 0 ? 'pos' : c.total < 0 ? 'neg' : 'zero');
+    document.getElementById('detail-week-add').textContent = '+' + c.weekAdd;
+    document.getElementById('detail-week-sub').textContent = '-' + c.weekSub;
+    document.getElementById('detail-today').textContent = (c.today > 0 ? '+' : '') + c.today;
+    document.getElementById('detail-today').className = 'v ' + (c.today >= 0 ? 'pos' : 'neg');
+    document.getElementById('detail-bar').style.setProperty('--child-bg', c.color + '20');
+    document.getElementById('summary-card').style.setProperty('--child-bg-soft', c.color + '15');
+    document.getElementById('detail-fab').style.setProperty('--child-color', c.color);
+
+    // 渲染流水
+    const list = document.getElementById('records-list');
+    list.innerHTML = '';
+    Object.entries(records).forEach(([date, items]) => {
+      const header = document.createElement('div');
+      header.className = 'date-header';
+      header.textContent = date;
+      list.appendChild(header);
+      items.forEach((r, i) => {
+        const card = document.createElement('div');
+        card.className = 'record';
+        card.onclick = openDelete;
+        card.innerHTML = `
+          <div class="dot ${r.type}">${r.type === 'add' ? '+' : '-'}</div>
+          <div class="info">
+            <div class="title">${r.title}</div>
+            ${r.note ? `<div class="note">${r.note}</div>` : ''}
+            <div class="time">${r.time}</div>
+          </div>
+          <div class="delta ${r.type}">${r.type === 'add' ? '+' : '-'}${r.delta}</div>
+        `;
+        list.appendChild(card);
+      });
+    });
+  }
+
+  function loadAdd() {
+    const c = children[currentChildIdx];
+    document.getElementById('add-strip').querySelector('.avatar').textContent = c.avatar;
+    document.getElementById('add-strip').querySelector('.avatar').style.background = c.color;
+    document.getElementById('add-strip').style.setProperty('--child-bg-soft', c.color + '15');
+    document.getElementById('add-strip').querySelector('.name').textContent = c.name;
+    document.getElementById('add-strip').querySelector('.meta').textContent = '当前积分 ' + c.total;
+  }
+
+  // ========== AddRecord 交互 ==========
+  function setType(t) {
+    currentType = t;
+    document.querySelectorAll('.type-tab').forEach(el => el.classList.remove('active'));
+    document.querySelector('.type-tab.' + t).classList.add('active');
+    const pts = document.getElementById('points-display');
+    pts.className = 'points-field ' + t;
+    const btn = document.getElementById('save-btn');
+    btn.className = 'save-btn ' + t;
+    btn.textContent = t === 'add' ? '保存奖励' : '保存扣减';
+  }
+
+  function adj(d) {
+    currentPoints = Math.max(0, currentPoints + d);
+    document.getElementById('points-display').textContent = currentPoints;
+  }
+
+  // ========== Dialog ==========
+  function openEditor() {
+    const ag = document.getElementById('avatar-grid');
+    ag.innerHTML = '';
+    avatars.forEach((a, i) => {
+      const d = document.createElement('div');
+      d.className = 'picker-cell' + (i === 0 ? ' selected' : '');
+      d.textContent = a;
+      d.onclick = () => {
+        document.querySelectorAll('#avatar-grid .picker-cell').forEach(x => x.classList.remove('selected'));
+        d.classList.add('selected');
+      };
+      ag.appendChild(d);
+    });
+    const cg = document.getElementById('color-grid');
+    cg.innerHTML = '';
+    colors.forEach((c, i) => {
+      const d = document.createElement('div');
+      d.className = 'picker-cell color' + (i === 0 ? ' selected' : '');
+      d.style.background = c;
+      d.onclick = () => {
+        document.querySelectorAll('#color-grid .picker-cell').forEach(x => x.classList.remove('selected'));
+        d.classList.add('selected');
+      };
+      cg.appendChild(d);
+    });
+    document.getElementById('editor-scrim').classList.add('show');
+  }
+  function closeEditor() { document.getElementById('editor-scrim').classList.remove('show'); }
+
+  function openDelete() { document.getElementById('delete-scrim').classList.add('show'); }
+  function closeDelete() { document.getElementById('delete-scrim').classList.remove('show'); }
+
+  // 初始化
+  showScreen('home-main');
+</script>
+
+</body>
+</html>
