@@ -16,6 +16,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -124,15 +126,16 @@ fun TrendChart(
             }
 
             // 极值标签（用原生 Paint 直接画文字）
-            drawContext.canvas.nativeCanvas.apply {
+            drawIntoCanvas { canvas ->
+                val native = canvas.nativeCanvas
                 val paint = android.graphics.Paint().apply {
                     color = labelColor.toArgb()
                     textSize = 22f
                     isAntiAlias = true
                 }
-                drawText("+$maxAbs", 0f, padTop + 16f, paint)
-                drawText("0", 4f, zeroY + 8f, paint)
-                drawText("-$maxAbs", 4f, h - 4f, paint)
+                native.drawText("+$maxAbs", 0f, padTop + 16f, paint)
+                native.drawText("0", 4f, zeroY + 8f, paint)
+                native.drawText("-$maxAbs", 4f, h - 4f, paint)
             }
         }
 
