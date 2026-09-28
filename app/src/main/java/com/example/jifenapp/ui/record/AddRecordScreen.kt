@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -191,7 +193,7 @@ private fun TypeTabs(type: RecordType, onChange: (RecordType) -> Unit) {
             onClick = { onChange(RecordType.ADD) },
             label = { Text("奖励 +") },
             leadingIcon = if (type == RecordType.ADD) {
-                { Icon(androidx.compose.material.icons.Icons.Default.Add, null) }
+                { Icon(Icons.Filled.Add, null) }
             } else null,
             modifier = Modifier.weight(1f)
         )
@@ -200,7 +202,7 @@ private fun TypeTabs(type: RecordType, onChange: (RecordType) -> Unit) {
             onClick = { onChange(RecordType.SUBTRACT) },
             label = { Text("扣减 -") },
             leadingIcon = if (type == RecordType.SUBTRACT) {
-                { Icon(androidx.compose.material.icons.Icons.Default.Remove, null) }
+                { Icon(Icons.Filled.Remove, null) }
             } else null,
             modifier = Modifier.weight(1f)
         )

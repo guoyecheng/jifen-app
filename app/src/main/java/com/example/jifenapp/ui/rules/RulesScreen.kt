@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -88,11 +89,11 @@ fun RulesScreen(
                 },
                 actions = {
                     IconButton(onClick = { showRuleEditor = true }) {
-                        Icon(Icons.Default.Add, contentDescription = "新增模板")
+                        Icon(Icons.Filled.Add, contentDescription = "新增模板")
                     }
                     Box {
                         IconButton(onClick = { menuExpanded = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "更多")
+                            Icon(Icons.Filled.MoreVert, contentDescription = "更多")
                         }
                         DropdownMenu(
                             expanded = menuExpanded,
@@ -105,7 +106,7 @@ fun RulesScreen(
                                     editingCategory = null
                                     showCategoryEditor = true
                                 },
-                                leadingIcon = { Icon(Icons.Default.Category, null) }
+                                leadingIcon = { Icon(Icons.Filled.Category, null) }
                             )
                         }
                     }
@@ -133,7 +134,7 @@ fun RulesScreen(
                 EmptyState(
                     title = "还没有模板",
                     subtitle = "点右上角 + 添加你的第一个模板，例如\"刷牙 +5\"",
-                    icon = androidx.compose.material.icons.Icons.Default.Star,
+                    icon = Icons.Filled.Star,
                     actionText = "新建模板",
                     onAction = { showRuleEditor = true }
                 )
@@ -394,10 +395,10 @@ private fun RuleRow(
             Spacer(Modifier.size(4.dp))
             Switch(checked = rule.enabled, onCheckedChange = { onToggle() })
             IconButton(onClick = onEdit) {
-                Icon(Icons.Default.Edit, contentDescription = "编辑", tint = MaterialTheme.colorScheme.primary)
+                Icon(Icons.Filled.Edit, contentDescription = "编辑", tint = MaterialTheme.colorScheme.primary)
             }
             IconButton(onClick = onDelete) {
-                Icon(Icons.Default.Delete, contentDescription = "删除", tint = MaterialTheme.colorScheme.error)
+                Icon(Icons.Filled.Delete, contentDescription = "删除", tint = MaterialTheme.colorScheme.error)
             }
         }
     }
