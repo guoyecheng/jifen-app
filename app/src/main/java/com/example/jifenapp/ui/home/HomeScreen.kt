@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChildCare
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -68,7 +69,7 @@ fun HomeScreen(
                 actions = {
                     IconButton(onClick = onOpenRules) {
                         Icon(
-                            androidx.compose.material.icons.Icons.Default.Star,
+                            Icons.Filled.Star,
                             contentDescription = "行为模板"
                         )
                     }
