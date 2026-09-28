@@ -105,13 +105,11 @@ class AddRecordViewModel(
     }
 
     companion object {
-        fun create(childId: Long): (AppContainer) -> AddRecordViewModel = { container ->
-            AddRecordViewModel(
-                childId = childId,
-                childRepository = container.childRepository,
-                recordRepository = container.pointRecordRepository,
-                ruleRepository = container.pointRuleRepository
-            )
-        }
+        fun create(container: AppContainer, childId: Long): AddRecordViewModel = AddRecordViewModel(
+            childId = childId,
+            childRepository = container.childRepository,
+            recordRepository = container.pointRecordRepository,
+            ruleRepository = container.pointRuleRepository
+        )
     }
 }

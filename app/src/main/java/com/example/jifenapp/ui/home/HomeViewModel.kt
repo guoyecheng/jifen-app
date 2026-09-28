@@ -67,11 +67,9 @@ class HomeViewModel(
     }
 
     companion object {
-        fun create(): (AppContainer) -> HomeViewModel = { container ->
-            HomeViewModel(
-                childRepository = container.childRepository,
-                recordRepository = container.pointRecordRepository
-            )
-        }
+        fun create(container: AppContainer): HomeViewModel = HomeViewModel(
+            childRepository = container.childRepository,
+            recordRepository = container.pointRecordRepository
+        )
     }
 }

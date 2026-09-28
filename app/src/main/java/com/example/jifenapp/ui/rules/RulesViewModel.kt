@@ -96,11 +96,9 @@ class RulesViewModel(
     }
 
     companion object {
-        fun create(): (AppContainer) -> RulesViewModel = { container ->
-            RulesViewModel(
-                ruleRepository = container.pointRuleRepository,
-                categoryRepository = container.categoryRepository
-            )
-        }
+        fun create(container: AppContainer): RulesViewModel = RulesViewModel(
+            ruleRepository = container.pointRuleRepository,
+            categoryRepository = container.categoryRepository
+        )
     }
 }

@@ -1,9 +1,6 @@
 package com.example.jifenapp.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -18,8 +15,6 @@ import com.example.jifenapp.ui.record.AddRecordScreen
 import com.example.jifenapp.ui.record.AddRecordViewModel
 import com.example.jifenapp.ui.rules.RulesScreen
 import com.example.jifenapp.ui.rules.RulesViewModel
-import androidx.compose.ui.platform.LocalContext
-import com.example.jifenapp.JifenApplication
 import com.example.jifenapp.di.viewModelFactory
 
 /**
@@ -34,7 +29,7 @@ fun JifenNavHost(navController: NavHostController) {
     ) {
         composable(Routes.Home.route) {
             val vm: HomeViewModel = viewModel(
-                factory = viewModelFactory { HomeViewModel.create() }
+                factory = viewModelFactory { HomeViewModel.create(it) }
             )
             HomeScreen(
                 viewModel = vm,
@@ -52,7 +47,7 @@ fun JifenNavHost(navController: NavHostController) {
 
         composable(Routes.Rules.route) {
             val vm: RulesViewModel = viewModel(
-                factory = viewModelFactory { RulesViewModel.create() }
+                factory = viewModelFactory { RulesViewModel.create(it) }
             )
             RulesScreen(
                 viewModel = vm,
@@ -68,7 +63,7 @@ fun JifenNavHost(navController: NavHostController) {
         ) { entry ->
             val childId = entry.arguments?.getLong(Routes.ChildDetail.ARG_CHILD_ID) ?: 0L
             val vm: ChildDetailViewModel = viewModel(
-                factory = viewModelFactory { ChildDetailViewModel.create(childId) }
+                factory = viewModelFactory { ChildDetailViewModel.create(it, childId) }
             )
             ChildDetailScreen(
                 childId = childId,
@@ -88,7 +83,7 @@ fun JifenNavHost(navController: NavHostController) {
         ) { entry ->
             val childId = entry.arguments?.getLong(Routes.AddRecord.ARG_CHILD_ID) ?: 0L
             val vm: AddRecordViewModel = viewModel(
-                factory = viewModelFactory { AddRecordViewModel.create(childId) }
+                factory = viewModelFactory { AddRecordViewModel.create(it, childId) }
             )
             AddRecordScreen(
                 childId = childId,

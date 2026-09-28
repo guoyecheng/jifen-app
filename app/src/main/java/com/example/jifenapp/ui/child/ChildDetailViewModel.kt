@@ -67,12 +67,10 @@ class ChildDetailViewModel(
     }
 
     companion object {
-        fun create(childId: Long): (AppContainer) -> ChildDetailViewModel = { container ->
-            ChildDetailViewModel(
-                childId = childId,
-                childRepository = container.childRepository,
-                recordRepository = container.pointRecordRepository
-            )
-        }
+        fun create(container: AppContainer, childId: Long): ChildDetailViewModel = ChildDetailViewModel(
+            childId = childId,
+            childRepository = container.childRepository,
+            recordRepository = container.pointRecordRepository
+        )
     }
 }

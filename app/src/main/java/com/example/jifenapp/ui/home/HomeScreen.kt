@@ -47,8 +47,6 @@ import com.example.jifenapp.ui.component.AnimatedNumber
 import com.example.jifenapp.ui.component.ChildAvatar
 import com.example.jifenapp.ui.component.EmptyState
 import com.example.jifenapp.ui.component.HomeCardSkeleton
-import com.example.jifenapp.ui.theme.ChildAvatarChoices
-import com.example.jifenapp.ui.theme.ChildColorChoices
 import com.example.jifenapp.ui.child.ChildEditorDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
