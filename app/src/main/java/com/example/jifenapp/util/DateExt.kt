@@ -38,9 +38,10 @@ fun startOfTodayMillis(): Long =
 
 /** 本周一 00:00 的 epochMillis（周一作为一周第一天）。 */
 fun startOfWeekMillis(today: LocalDate = Clock.System.now().toLocalDateTime(zone).date): Long {
-    // 直接用 epoch days 算术，避免 kotlinx.datetime.DateTimeUnit.DAY 的访问路径歧义
-    // （0.6.x 中它是 DateTimeUnit.DateBased.DAY，不是 DateTimeUnit.DAY 直接可达）
-    val monday = LocalDate.fromEpochDays(today.toEpochDays() - today.dayOfWeek.ordinal)
+    // 直接用 epoch days 算术，避免 kotlinx.datetime.DateTimeUnit.DAY 的访问路径歧义。
+    // 注意：kotlinx.datetime.LocalDate.toEpochDays() 返回 Long，而
+    // LocalDate.fromEpochDays(Int) 接 Int，所以差值要先 .toInt()。
+    val monday = LocalDate.fromEpochDays(today.toEpochDays().toInt() - today.dayOfWeek.ordinal)
     return monday.atStartOfDayIn(zone).toEpochMilliseconds()
 }
 
