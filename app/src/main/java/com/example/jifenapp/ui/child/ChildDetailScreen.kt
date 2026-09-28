@@ -66,7 +66,8 @@ fun ChildDetailScreen(
     childId: Long,
     viewModel: ChildDetailViewModel,
     onBack: () -> Unit,
-    onAddRecord: () -> Unit
+    onAddRecord: () -> Unit,
+    onOpenStatistics: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     var pendingDelete by remember { mutableStateOf<PointRecordEntity?>(null) }
@@ -83,6 +84,14 @@ fun ChildDetailScreen(
                         navigationIcon = {
                             IconButton(onClick = onBack) {
                                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = onOpenStatistics) {
+                                Icon(
+                                    Icons.Filled.Star,
+                                    contentDescription = "统计"
+                                )
                             }
                         },
                         colors = TopAppBarDefaults.topAppBarColors(

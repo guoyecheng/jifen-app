@@ -15,6 +15,8 @@ import com.example.jifenapp.ui.record.AddRecordScreen
 import com.example.jifenapp.ui.record.AddRecordViewModel
 import com.example.jifenapp.ui.rules.RulesScreen
 import com.example.jifenapp.ui.rules.RulesViewModel
+import com.example.jifenapp.ui.statistics.StatisticsScreen
+import com.example.jifenapp.ui.statistics.StatisticsViewModel
 import com.example.jifenapp.di.viewModelFactory
 
 /**
@@ -71,6 +73,9 @@ fun JifenNavHost(navController: NavHostController) {
                 onBack = { navController.popBackStack() },
                 onAddRecord = {
                     navController.navigate(Routes.AddRecord.build(childId))
+                },
+                onOpenStatistics = {
+                    navController.navigate(Routes.Statistics.build(childId))
                 }
             )
         }
@@ -90,6 +95,22 @@ fun JifenNavHost(navController: NavHostController) {
                 viewModel = vm,
                 onBack = { navController.popBackStack() },
                 onSaved = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.Statistics.route,
+            arguments = listOf(
+                navArgument(Routes.Statistics.ARG_CHILD_ID) { type = NavType.LongType }
+            )
+        ) { entry ->
+            val childId = entry.arguments?.getLong(Routes.Statistics.ARG_CHILD_ID) ?: 0L
+            val vm: StatisticsViewModel = viewModel(
+                factory = viewModelFactory { StatisticsViewModel.create(it, childId) }
+            )
+            StatisticsScreen(
+                viewModel = vm,
+                onBack = { navController.popBackStack() }
             )
         }
     }

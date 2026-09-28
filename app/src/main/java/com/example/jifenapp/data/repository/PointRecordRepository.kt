@@ -3,6 +3,7 @@ package com.example.jifenapp.data.repository
 import com.example.jifenapp.data.local.dao.PointRecordDao
 import com.example.jifenapp.data.local.entity.PointRecordEntity
 import com.example.jifenapp.data.local.entity.RecordType
+import com.example.jifenapp.data.model.CategoryShare
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -24,6 +25,22 @@ class PointRecordRepository(private val dao: PointRecordDao) {
 
     fun netInRange(childId: Long, fromMillis: Long, toMillis: Long): Flow<Int> =
         dao.netInRange(childId, fromMillis, toMillis)
+
+    // ===== 迭代 3 统计聚合 =====
+
+    /** 时间区间内按分类聚合（饼图） */
+    fun observeCategoryShare(
+        childId: Long,
+        fromMillis: Long,
+        toMillis: Long
+    ): Flow<List<CategoryShare>> = dao.observeCategoryShare(childId, fromMillis, toMillis)
+
+    /** 时间区间内的全部流水（折线图 / 手动按 LocalDate 分组用） */
+    fun observeByChildInRange(
+        childId: Long,
+        fromMillis: Long,
+        toMillis: Long
+    ): Flow<List<PointRecordEntity>> = dao.observeByChildInRange(childId, fromMillis, toMillis)
 
     suspend fun add(record: PointRecordEntity): Long = dao.insert(record)
 

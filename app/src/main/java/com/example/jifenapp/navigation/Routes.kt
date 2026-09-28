@@ -24,4 +24,10 @@ sealed class Routes(val route: String) {
 
     /** 行为模板管理 */
     data object Rules : Routes("rules")
+
+    /** 统计页 */
+    data object Statistics : Routes("stats/{childId}") {
+        const val ARG_CHILD_ID = "childId"
+        fun build(childId: Long): String = "stats/$childId"
+    }
 }
