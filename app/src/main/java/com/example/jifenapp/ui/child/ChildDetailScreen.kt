@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,7 +26,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -50,13 +48,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.jifenapp.data.local.entity.PointRecordEntity
 import com.example.jifenapp.data.local.entity.RecordType
 import com.example.jifenapp.ui.component.AnimatedNumber
-import com.example.jifenapp.ui.component.ChildAvatar
 import com.example.jifenapp.ui.component.EmptyState
 import com.example.jifenapp.ui.theme.LocalChildColor
 import com.example.jifenapp.ui.theme.PointNegative
 import com.example.jifenapp.ui.theme.PointPositive
 import com.example.jifenapp.ui.theme.childTheme
-import com.example.jifenapp.util.toDateString
 import com.example.jifenapp.util.toFriendlyTime
 import com.example.jifenapp.util.toLocalDate
 
@@ -72,7 +68,7 @@ fun ChildDetailScreen(
     onAddRecord: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    var pendingDelete by remember { mutableStateOf<PointRecordEntity?>(null)
+    var pendingDelete by remember { mutableStateOf<PointRecordEntity?>(null) }
 
     val child = state.child
     if (child != null) {
