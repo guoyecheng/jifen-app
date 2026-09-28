@@ -84,7 +84,7 @@ fun HomeScreen(
                         // 默认选中第一个孩子
                         state.children.firstOrNull()?.let { onAddRecord(it.child.id) }
                     },
-                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                    icon = { Icon(Icons.Filled.Add, contentDescription = null) },
                     text = { Text("记一笔") }
                 )
             }
@@ -94,7 +94,7 @@ fun HomeScreen(
             EmptyState(
                 title = "还没有添加孩子",
                 subtitle = "添加你的第一个孩子，开始记录TA的每一次成长",
-                icon = Icons.Default.ChildCare,
+                icon = Icons.Filled.ChildCare,
                 actionText = "添加孩子",
                 onAction = { showAddChildDialog = true },
                 modifier = Modifier.padding(padding)

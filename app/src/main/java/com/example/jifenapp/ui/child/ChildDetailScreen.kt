@@ -95,7 +95,7 @@ fun ChildDetailScreen(
                         onClick = onAddRecord,
                         containerColor = childColor
                     ) {
-                        Icon(Icons.Default.Add, contentDescription = "记一笔", tint = Color.White)
+                        Icon(Icons.Filled.Add, contentDescription = "记一笔", tint = Color.White)
                     }
                 }
             ) { padding ->
@@ -201,7 +201,7 @@ private fun RecordsList(
         EmptyState(
             title = "还没有记录",
             subtitle = "点右下角 + 加一条吧",
-            icon = androidx.compose.material.icons.Icons.Default.Star,
+            icon = Icons.Filled.Star,
             modifier = modifier
         )
         return
