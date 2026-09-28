@@ -63,7 +63,7 @@ interface PointRecordDao {
         SELECT
             p.categoryId AS category_id,
             COALESCE(c.name, '未分类') AS categoryName,
-            COALESCE(c.colorHex, '#9E9E9E') AS color_hex,
+            COALESCE(c.colorHex, '#9E9E9E') AS colorHex,
             IFNULL(
                 SUM(CASE WHEN r.type = 'ADD' THEN r.points ELSE -r.points END), 0
             ) AS total,
@@ -73,7 +73,7 @@ interface PointRecordDao {
         LEFT JOIN categories c ON p.categoryId = c.id
         WHERE r.childId = :childId
           AND r.createdAt BETWEEN :fromMillis AND :toMillis
-        GROUP BY p.categoryId, c.name, c.color_hex
+        GROUP BY p.categoryId, c.name, c.colorHex
         ORDER BY total DESC
     """)
     fun observeCategoryShare(

@@ -14,7 +14,8 @@ import androidx.room.ColumnInfo
 data class CategoryShare(
     @ColumnInfo(name = "category_id") val categoryId: Long?,
     val categoryName: String,
-    @ColumnInfo(name = "color_hex") val colorHex: String,
+    /** 与 categories 表同名字段（colorHex, 无下划线）；DAO SELECT 列表名就是 colorHex */
+    val colorHex: String,
     val total: Int,
     val count: Int
 )
