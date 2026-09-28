@@ -43,6 +43,10 @@ fun PieChart(
     // data: 计算总和与每块占比
     val totalAbs = remember(slices) { slices.sumOf { kotlin.math.abs(it.total) }.coerceAtLeast(1) }
 
+    // MaterialTheme.colorScheme.primary 是 @Composable，Canvas {} 是 DrawScope，
+    // 在 DrawScope 里再调 MaterialTheme 会编译失败；先在 Composable 作用域里捕获。
+    val fallbackPrimary = MaterialTheme.colorScheme.primary
+
     if (slices.isEmpty() || slices.all { it.total == 0 }) {
         Box(
             modifier = modifier
@@ -79,7 +83,7 @@ fun PieChart(
                         val sweep = fraction * 360f
                         val color = runCatching {
                             Color(android.graphics.Color.parseColor(slice.colorHex))
-                        }.getOrDefault(MaterialTheme.colorScheme.primary.toArgb().toLong().let { Color(it.toInt()) })
+                        }.getOrDefault(fallbackPrimary)
 
                         drawArc(
                             color = color,
