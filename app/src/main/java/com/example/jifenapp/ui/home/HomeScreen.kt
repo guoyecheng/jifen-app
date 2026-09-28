@@ -26,6 +26,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -159,9 +160,11 @@ private fun LoadingGrid(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ChildCard(item: ChildWithStats, onClick: () -> Unit) {
-    val childColor = remember(item.child.colorHex) {
+    // MaterialTheme.colorScheme.primary 是 @Composable，remember { } 内部禁止再调。
+    val fallbackPrimary = MaterialTheme.colorScheme.primary
+    val childColor = remember(item.child.colorHex, fallbackPrimary) {
         runCatching { Color(android.graphics.Color.parseColor(item.child.colorHex)) }
-            .getOrDefault(MaterialTheme.colorScheme.primary)
+            .getOrDefault(fallbackPrimary)
     }
     Card(
         onClick = onClick,

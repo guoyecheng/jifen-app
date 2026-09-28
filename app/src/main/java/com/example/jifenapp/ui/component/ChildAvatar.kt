@@ -29,9 +29,12 @@ fun ChildAvatar(
     size: Dp = 72.dp,
     emojiSizeSp: Int = 36
 ) {
-    val backgroundColor = remember(colorHex) {
+    // MaterialTheme.colorScheme 是 @Composable，必须在 @Composable 作用域取值；
+    // remember { } 的 lambda 带 @DisallowComposableCalls，不能在里面再调 MaterialTheme。
+    val fallbackPrimary = MaterialTheme.colorScheme.primary
+    val backgroundColor = remember(colorHex, fallbackPrimary) {
         runCatching { Color(android.graphics.Color.parseColor(colorHex)) }
-            .getOrDefault(MaterialTheme.colorScheme.primary)
+            .getOrDefault(fallbackPrimary)
     }
     Box(
         modifier = modifier
