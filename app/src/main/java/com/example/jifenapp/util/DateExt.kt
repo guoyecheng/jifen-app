@@ -8,6 +8,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -61,10 +62,10 @@ fun startOfDaysAgoMillis(days: Int): Long {
 /** 把 epochMillis 格式化为 "HH:mm" */
 fun Long.toTimeString(): String {
     val ldt = toLocalDateTime()
-    val time = ldt.toJavaLocalDate().atStartOfDay(java.time.ZoneId.systemDefault())
-        .toLocalDate()
-        .atTime(ldt.hour, ldt.minute)
-    return time.format(DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()))
+    // 直接转成 java.time.LocalDateTime 然后格式化；之前那串 atStartOfDay -> toLocalDate -> atTime 是错的
+    // (LocalDateTime 没有 atStartOfDay)，且无意义
+    val javaLdt = ldt.toJavaLocalDateTime()
+    return javaLdt.format(DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()))
 }
 
 /** 把 epochMillis 格式化为 "MM-dd HH:mm" */
@@ -77,7 +78,8 @@ fun Long.toDateTimeString(): String {
 /** 把 epochMillis 格式化为 "yyyy-MM-dd"（用于按日分组头） */
 fun Long.toDateString(): String {
     val ldt = toLocalDateTime()
-    val date = ldt.toJavaLocalDate()
+    // ldt 是 LocalDateTime，需要先取 date 部分 (LocalDate) 再转 java.time.LocalDate
+    val date = ldt.date.toJavaLocalDate()
     return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault()))
 }
 
