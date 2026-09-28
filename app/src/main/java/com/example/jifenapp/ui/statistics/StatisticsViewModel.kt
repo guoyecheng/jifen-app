@@ -10,6 +10,7 @@ import com.example.jifenapp.di.AppContainer
 import com.example.jifenapp.util.TimeRange
 import com.example.jifenapp.util.nowMillis
 import com.example.jifenapp.util.startOfTodayMillis
+import com.example.jifenapp.util.toEpochDay
 import com.example.jifenapp.util.toLocalDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
